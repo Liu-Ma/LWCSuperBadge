@@ -1,5 +1,5 @@
 <template>
-    <template if:true={data} >
+    <template if:true={boats.data} >
         <lightning-tabset variant="scoped">
             <lightning-tab label="Gallery">
               <div class="slds-scrollable_y">
@@ -31,6 +31,7 @@
                     data={boats.data}
                     columns={columns}
                     onsave={handleSave}
+                    draft-values={draftValues}
                     show-row-number-column
                     hide-checkbox-column>
                 </lightning-datatable>

@@ -20,7 +20,7 @@ export default class BoatsNearMe extends LightningElement {
   // Name it getBoatsByLocation, and use latitude, longitude and boatTypeId
   // Handle the result and calls createMapMarkers
   @wire(getBoatsByLocation, {latitude: '$latitude', longitude: '$longitude', boatTypeId: '$boatTypeId'})  
-  wiredBoatsJSON({error, data}) { 
+  wiredBoatsJSON({error, data}) {
     // Error handling
     if (data) {
       this.createMapMarkers(data);
@@ -37,8 +37,8 @@ export default class BoatsNearMe extends LightningElement {
   
   // Controls the isRendered property
   // Calls getLocationFromBrowser()
-  renderedCallback() { 
-    if(this.isRendered == false){
+  renderedCallback() {
+    if(!this.isRendered){
       this.getLocationFromBrowser();
     }
     this.isRendered = true;
@@ -47,17 +47,19 @@ export default class BoatsNearMe extends LightningElement {
   // Gets the location from the Browser
   // position => {latitude and longitude}
   getLocationFromBrowser() {
-      navigator.geolocation.getCurrentPosition(position => {
-        this.latitude = position.coords.latitude, 
-        this.longitude = position.coords.longitude
-      });
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+      this.latitude = position.coords.latitude; 
+      this.longitude = position.coords.longitude;
+    });
   }
   
   // Creates the map markers
   createMapMarkers(boatData) {
      // const newMarkers = boatData.map(boat => {...});
      // newMarkers.unshift({...});
-     const newMarkers = boatData.map(boat => {
+     const newMarkers = JSON.parse(boatData).map(boat => {
        return {
         title: boat.Name,
         location: {

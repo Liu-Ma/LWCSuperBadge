@@ -23,6 +23,7 @@ export default class BoatSearchResults extends LightningElement {
   boatTypeId = '';
   boats;
   isLoading = false;
+  draftValues = [];
   
   // wired message context
   @wire(MessageContext)
@@ -37,8 +38,8 @@ export default class BoatSearchResults extends LightningElement {
   // uses notifyLoading
   @api
   searchBoats(boatTypeId) { 
-      this.boatTypeId=boatTypeId;
-      this.notifyLoading(true);
+    this.boatTypeId=boatTypeId;
+    this.notifyLoading(true);
   }
   
   // this public function must refresh the boats asynchronously
@@ -50,23 +51,26 @@ export default class BoatSearchResults extends LightningElement {
   
   // this function must update selectedBoatId and call sendMessageService
   updateSelectedTile(event) { 
-      this.selectedBoatId=event.detail.boatId;
-      this.sendMessageService(selectedBoatId);
+    this.selectedBoatId=event.detail.boatId;
+    this.sendMessageService(this.selectedBoatId);
   }
   
   // Publishes the selected boat Id on the BoatMC.
   sendMessageService(boatId) { 
     // explicitly pass boatId to the parameter recordId
-    const message = {recordId: this.boatId};
+    const message = {recordId: boatId};
     publish(this.messageContext, BOATMC, message);
   }
   
   // This method must save the changes in the Boat Editor
   // Show a toast message with the title
   // clear lightning-datatable draft values
-  handleSave() {
+  handleSave(event) {
+    console.log('enteredHandleSave');
     const recordInputs = event.detail.draftValues.slice().map(draft => {
         const fields = Object.assign({}, draft);
+        console.log(draft);
+        console.log(fields);
         return { fields };
     });
     const promises = recordInputs.map(recordInput =>
@@ -75,6 +79,8 @@ export default class BoatSearchResults extends LightningElement {
         );
     Promise.all(promises)
         .then(() => {
+          
+          console.log('.THEN ENTERED');
             this.dispatchEvent(
                 new ShowToastEvent({
                     title: SUCCESS_TITLE,
@@ -86,6 +92,7 @@ export default class BoatSearchResults extends LightningElement {
             this.refresh();
         })
         .catch(error => {
+          console.log('.ERROR CAUGHT');
             this.dispatchEvent(
                 new ShowToastEvent({
                     title: ERROR_TITLE,
@@ -95,6 +102,7 @@ export default class BoatSearchResults extends LightningElement {
             )
         })
         .finally(() => {
+          console.log('.FINALLY ENTERED');
         });
   }
   // Check the current value of isLoading before dispatching the doneloading or loading custom event

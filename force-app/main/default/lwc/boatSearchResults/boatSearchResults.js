@@ -80,7 +80,6 @@ export default class BoatSearchResults extends LightningElement {
     Promise.all(promises)
         .then(() => {
           
-          console.log('.THEN ENTERED');
             this.dispatchEvent(
                 new ShowToastEvent({
                     title: SUCCESS_TITLE,
@@ -92,7 +91,6 @@ export default class BoatSearchResults extends LightningElement {
             this.refresh();
         })
         .catch(error => {
-          console.log('.ERROR CAUGHT');
             this.dispatchEvent(
                 new ShowToastEvent({
                     title: ERROR_TITLE,
@@ -102,7 +100,6 @@ export default class BoatSearchResults extends LightningElement {
             )
         })
         .finally(() => {
-          console.log('.FINALLY ENTERED');
         });
   }
   // Check the current value of isLoading before dispatching the doneloading or loading custom event

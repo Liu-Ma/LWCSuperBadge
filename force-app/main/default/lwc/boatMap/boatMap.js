@@ -33,7 +33,7 @@ export default class BoatMap extends LightningElement {
   messageContext;
   // Getting record's location to construct map markers using recordId
   // Wire the getRecord method using ('$boatId')
-  @wire(getRecord, {recordId: $recordId, fields: BOAT_FIELDS})
+  @wire(getRecord, {recordId: '$recordId', fields: BOAT_FIELDS})
   wiredRecord({ error, data }) {
     // Error handling
     if (data) {
@@ -56,7 +56,7 @@ export default class BoatMap extends LightningElement {
       return;
     }
     // Subscribe to the message channel to retrieve the recordID and assign it to boatId.
-    subscribeMC();
+    this.subscribeMC();
   }
 
   subscribeMC() {

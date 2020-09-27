@@ -33,7 +33,7 @@ export default class BoatMap extends LightningElement {
   messageContext;
   // Getting record's location to construct map markers using recordId
   // Wire the getRecord method using ('$boatId')
-  @wire(getRecord, {recordId: '$recordId', fields: BOAT_FIELDS})
+  @wire(getRecord, {recordId: '$boatId', fields: BOAT_FIELDS})
   wiredRecord({ error, data }) {
     // Error handling
     if (data) {
@@ -71,12 +71,12 @@ export default class BoatMap extends LightningElement {
 
   // Creates the map markers array with the current boat's location for the map.
   updateMap(Longitude, Latitude) {
-    mapMarkers = [{
+    this.mapMarkers = [{
       location: {
           Latitude: Latitude,
           Longitude: Longitude
       }
-  }];
+    }];
   }
 
   // Getter method for displaying the map component, or a helper method.

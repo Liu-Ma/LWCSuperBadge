@@ -1,42 +1,42 @@
 <template>
     <template if:false={wiredRecord.data}>
         <!-- lightning card for the label when wiredRecord has no data goes here  -->
-        <lightning-card>
-            <span class="slds-align_absolute-center no-boat-height">{label.labelPleaseSelectABoat}</span>
+        <lightning-card class="slds-align_absolute-center no-boat-height">
+            <span>{label.labelPleaseSelectABoat}</span>
         </lightning-card>
     </template>
     <!-- lightning card for the content when wiredRecord has data goes here  -->
     <template if:true={wiredRecord.data}>
         <lightning-card>
-            <lightning-tabset variant="scoped" active-tab-value ="">
-                <lightning-tab label={label.labelDetails}>
-                    <lightning-card title={boatName} icon={detailsTabIconName}>
-                        <lightning-button 
-                            slot="actions"
-                            variant="Neutral"
-                            label={label.Full_Details}
-                            onclick={navigateToRecordViewPage}>
-                            </lightning-button>
-                            <lightning-record-view-form
-                                    record-id={wiredRecord.data.Id}
-                                    object-api-name="Boat__c">
-                                <div class="slds-box">
-                                    <lightning-output-field field-name="BoatType__c">
-                                    </lightning-output-field>
-                                    <lightning-output-field field-name="Length__c">
-                                    </lightning-output-field>
-                                    <lightning-output-field field-name="Price__c">
-                                    </lightning-output-field>
-                                    <lightning-output-field field-name="Description__c">
-                                    </lightning-output-field>
-                                </div>
-                            </lightning-record-view-form>
-                    </lightning-card>
+        <lightning-tabset variant="scoped" active-tab-value ="">
+            <lightning-tab label={label.labelDetails}>
+                <lightning-card title={boatName} icon-name={detailsTabIconName}>
+                    <lightning-button 
+                        slot="actions"
+                        label={label.labelFullDetails}
+                        onclick={navigateToRecordViewPage}>
+                        </lightning-button>
+                        <lightning-record-view-form
+                            density="Compact"
+                            record-id={boatId}
+                            object-api-name="Boat__c">
+                            <div class="slds-box">
+                                <lightning-output-field field-name="BoatType__c">
+                                </lightning-output-field>
+                                <lightning-output-field field-name="Length__c">
+                                </lightning-output-field>
+                                <lightning-output-field field-name="Price__c">
+                                </lightning-output-field>
+                                <lightning-output-field field-name="Description__c">
+                                </lightning-output-field>
+                            </div>
+                        </lightning-record-view-form>
+                </lightning-card>
                 </lightning-tab>
-                <lightning-tab label={label.Reviews} value={reviews}>
+                <lightning-tab label={label.labelReviews} value="reviews">
                     <c-boat-reviews record-id={boatId}></c-boat-reviews>
                 </lightning-tab>
-                <lightning-tab label={label.Add_Review}>
+                <lightning-tab label={label.labelAddReview}>
                     <c-boat-add-review-form record-id={boatId} oncreatereview={handleReviewCreated}></c-boat-add-review-form>
                 </lightning-tab>
             </lightning-tabset>

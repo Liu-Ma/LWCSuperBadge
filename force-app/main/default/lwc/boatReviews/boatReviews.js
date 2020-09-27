@@ -39,22 +39,15 @@ export default class BoatReviews extends NavigationMixin(LightningElement) {
     // sets isLoading to true during the process and false when it’s completed
     // Gets all the boatReviews from the result, checking for errors.
     getReviews() { 
-      console.log(49);
       this.isLoading = true;
       getAllReviews({boatId: this.boatId})
       .then(result => {
-        console.log(53);
-        console.log(result);
         this.boatReviews = result;
       })
       .catch(error =>{
-        console.log(57);
-        console.log(error.body.message);
         this.error = error.body.message;
       })
       .finally(() => {
-        console.log(61);
-        console.log(this.boatReviews);
         this.isLoading = false;
       });
     }

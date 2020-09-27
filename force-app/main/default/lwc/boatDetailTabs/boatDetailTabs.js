@@ -1,4 +1,4 @@
-import { LightningElement, wire } from 'lwc';
+import { LightningElement, wire, api } from 'lwc';
 import {getRecord, getFieldValue} from 'lightning/uiRecordApi';
 import { subscribe, MessageContext , APPLICATION_SCOPE} from 'lightning/messageService';
 import BOATMC from '@salesforce/messageChannel/BoatMessageChannel__c';
@@ -24,7 +24,7 @@ const BOAT_FIELDS = [BOAT_ID_FIELD, BOAT_NAME_FIELD];
 
 export default class BoatDetailTabs extends NavigationMixin(LightningElement) {
   boatId;
-  wiredRecord;
+  wiredRecordProperty;
   label = {
     labelDetails,
     labelReviews,
@@ -34,15 +34,7 @@ export default class BoatDetailTabs extends NavigationMixin(LightningElement) {
   };
 
   @wire(getRecord, {recordId: '$boatId', fields: BOAT_FIELDS})
-  wiredRecord({ error, data }) {
-    // Error handling
-    if (data) {
-      this.wiredRecord.data = data;
-    } else if (error) {
-      console.log(error);
-        //no instructions
-    }
-  }
+  wiredRecord;
 
   // Decide when to show or hide the icon
   // returns 'utility:anchor' or null
@@ -83,8 +75,8 @@ export default class BoatDetailTabs extends NavigationMixin(LightningElement) {
     this[NavigationMixin.Navigate]({
         type: 'standard__recordPage',
         attributes: {
-            recordId: {boatId},
-            objectApiName: 'Boat__c', // objectApiName is optional
+            recordId: this.boatId,
+            objectApiName: 'Boat__c',
             actionName: 'view'
         }
     });
